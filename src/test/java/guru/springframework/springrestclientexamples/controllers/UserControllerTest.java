@@ -1,5 +1,6 @@
 package guru.springframework.springrestclientexamples.controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.BodyInserters;
 
 @RunWith(SpringRunner.class)
@@ -44,5 +46,15 @@ public class UserControllerTest {
                 .body(BodyInserters.fromFormData(formData))
                 .exchange()
                 .expectStatus().isOk();
+    }
+
+    @Test
+    public void getUsers() {
+        String apiUrl = "http://apifaketory.com/api/user/";
+        RestTemplate restTemplate = new RestTemplate();
+        JsonNode jsonNode = restTemplate.getForObject(apiUrl, JsonNode.class);
+        System.out.println(jsonNode.size());
+        System.out.println("Response");
+        System.out.println(jsonNode.toString());
     }
 }
